@@ -1,0 +1,109 @@
+﻿@model IEnumerable<LibraryLab2.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+<h1><a asp-action="Create">Create</a></h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Publisher)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+
+            @if (User.Identity.Name == "librarian@gmail.com")
+                    {
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+                }
+            @if (User.Identity.Name == "librarian@gmail.com")
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Reserved)
+                </th>
+            }
+             @if (User.Identity.Name == "librarian@gmail.com")
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Leased)
+                </th>
+            }
+            
+            
+
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publisher)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+                @if (User.Identity.Name == "librarian@gmail.com")
+                {
+                 <td>
+                     @Html.DisplayFor(modelItem => item.User)
+                 </td> 
+                }
+                
+            @if (User.Identity.Name == "librarian@gmail.com")
+                {
+                 <td>
+                @Html.DisplayFor(modelItem => item.Reserved)
+            </td> 
+                }
+
+                @if (User.Identity.Name == "librarian@gmail.com")
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Leased)
+                    </td>
+                }
+
+            <td>
+                @if (User.Identity.Name == "librarian@gmail.com")
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                
+                @if (User.Identity.Name != "librarian@gmail.com" && item.Reserved == null)
+                    {
+                        <a asp-action="Reserve" asp-route-id="@item.Id">Reserve</a>
+                    }   
+                @if (User.Identity.Name == "librarian@gmail.com" & item.Reserved != null & item.Leased == null)
+                    {
+                        <a asp-action="Rent" asp-route-id="@item.Id">Rent</a>
+                    }
+                @if (User.Identity.Name == "librarian@gmail.com" && item.Reserved != null && item.Leased != null)
+                    {
+                        <a asp-action="Return" asp-route-id="@item.Id">Return</a>
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
